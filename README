@@ -1,0 +1,12 @@
+This simple haserl script can be used to show the decentral freifunk map
+on every webserver that support haserl. The data for the map can either be
+downloaded from nodes with luci and the decentral map installed or directly
+from a local latlon_file. This latlon_file can be written by the the
+olsrd nameservice plugin.
+
+Depencies: haserl, wget
+
+The javascript code is taken from the decentral map app in the luci
+webinterface: http://luci.subsignal.org and uses the same license
+(see LICENSE FILE)
+
