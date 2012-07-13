@@ -94,7 +94,7 @@ latlon_file="/tmp/latlon.js"
 				if [ "$mode" = "luci" ]; then
 						for h in $hosts; do
 						if [ -z "$result" ]; then
-							result="`wget -q http://10.11.0.15/cgi-bin/luci/freifunk/map/content -O - |grep -e '^Mid' -e '^Self' -e '^Node' -e '^PLink' -e '^Link'`"
+							result="`wget -q http://$h/cgi-bin/luci/freifunk/map/content -O - |grep -e '^Mid' -e '^Self' -e '^Node' -e '^PLink' -e '^Link'`"
 						fi
 					done
 				fi
