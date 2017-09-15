@@ -1,11 +1,21 @@
+# path (web) to static files without trailing slash
+# YOU NEED TO COPY THAT TO A LOCATION THAT CAN SERVE STATIC CONTENT - cgi-bin usually does not!
+STATIC_PATH="/static"
+
 # To get input data there are two ways:
 # 1. luci - download luci maps, 2. get from local latlon_file
-
 mode="luci"
-# If mode is luci then download the decentral map from these hosts
 
+# If mode is luci then download the decentral map from these hosts
 # first one is tried first and so on until download succeeded
 hosts="10.11.10.8 10.11.10.1"
 
 # if mode is latlon then read data from a local latlon file
 latlon_file="/tmp/latlon.js"
+
+# INITIAL MAP POSITION
+LAT="48.37"
+LON="10.89"
+
+# initial zoom level
+ZOOM_LEVEL="16"
