@@ -1,20 +1,10 @@
 #!/usr/bin/haserl
 Content-type: text/html
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 
 <%
-# config #
-
-# To get input data there are two ways:
-# 1. luci - download luci maps, 2. get from local latlon_file
-mode="luci"
-# If mode is luci then download the decentral map from these hosts
-# first one is tried first and so on until download succeeded
-hosts="10.11.10.8 10.11.10.1"
-
-# if mode is latlon then read data from a local latlon file
-latlon_file="/tmp/latlon.js"
+    . ./.config
 %>
 
 
