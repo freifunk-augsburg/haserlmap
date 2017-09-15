@@ -8,7 +8,7 @@ Content-type: text/html
 
 # To get input data there are two ways:
 # 1. luci - download luci maps, 2. get from local latlon_file
-mode="latlon"
+mode="luci"
 # If mode is luci then download the decentral map from these hosts
 # first one is tried first and so on until download succeeded
 hosts="10.11.10.8 10.11.10.1"
@@ -25,6 +25,12 @@ latlon_file="/tmp/latlon.js"
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://openlayers.org/en/v4.3.2/build/ol.js"></script>
     <style>
+        body {margin:0}
+        #ffmap {
+            position:relative;
+            width:100%;
+            height:640px;
+        }
         .ol-popup {
             background-color: #fff;
             padding: 10px;
@@ -33,16 +39,15 @@ latlon_file="/tmp/latlon.js"
     </style>
 </head>
 
-<body style="margin:0">
+<body>
 
 <noscript>No JavaScript, no map. sorry.</noscript>
 
-<div id="ffmap" style="position:relative; width:100%; height:640px;" tabindex="0"></div>
+<div id="ffmap" tabindex="0"></div>
 <div id="popup" class="ol-popup">
     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
     <div id="popup-content"></div>
 </div>
-
 
 <script type="text/javascript">
     var zoomLevel = 16;
