@@ -8,6 +8,7 @@ var points = new Array;
 var unkpos = new Array;
 var markers = new Array;
 var lines = new Array;
+var links = new Array();
 var container = document.getElementById('popup');
 var content = document.getElementById('popup-content');
 var closer = document.getElementById('popup-closer');
@@ -166,6 +167,16 @@ function Link(fromip, toip, lq, nlq, etx) {
 }
 
 function PLink(fromip, toip, lq, nlq, etx, lata, lona, ishnaa, latb, lonb, ishnab) {
+    if (! (fromip in links)) {
+        links[fromip] = new Array();
+    }
+    links[fromip].push({
+        fromip: fromip,
+        toip: toip,
+        lq: lq,
+        nlq: nlq,
+        etx: etx
+    });
     Link(fromip, toip, lq, nlq, etx);
 }
 
@@ -226,10 +237,12 @@ function ffmapinit() {
 
             if (properties['type'] === 'node') {
                 var nodeAliases = getAliases(properties['mainip']);
+                var nodeLinks = links[properties['mainip']];
+
                 function nodeAliasesFormatted() {
                     var ret = '';
                     for (var i = 0; i < nodeAliases.length; i++) {
-                        ret += nodeAliases[i];
+                        ret += '<a href="http://{0}" rel="nofollow">{0}</a>'.format(nodeAliases[i]);
                         if (i < nodeAliases.length - 1) {
                             ret += ', ';
                         }
@@ -237,10 +250,25 @@ function ffmapinit() {
                     return ret;
                 }
 
+                function linksFormatted() {
+                    ret = '';
+                    for (var i = 0; i < nodeLinks.length; i++) {
+                        ret += '<tr><td><a href="http://{0}" rel="nofollow">{0}</a></td><td>{1}</td></tr>'.format(
+                            nodeLinks[i]['toip'],
+                            nodeLinks[i]['etx']
+                        );
+                    };
+                    return ret;
+                }
+
                 content.innerHTML = '<h2>' + properties['name'] + '</h2>';
-                content.innerHTML += '<p>Main IP: <a href="http://{0}" rel="nofollow">{0}</a></p>'.format(properties['mainip']);
+                content.innerHTML += '<p><strong>Main IP:</strong> <a href="http://{0}" rel="nofollow">{0}</a></p>'.format(properties['mainip']);
                 if (nodeAliases.length > 0) {
-                    content.innerHTML += "<p>Alias IPs: {0}".format(nodeAliasesFormatted());
+                    content.innerHTML += '<p><strong>Alias IPs</strong>: {0}</p>'.format(nodeAliasesFormatted());
+                }
+
+                if (nodeLinks.length > 0) {
+                    content.innerHTML += '<strong>Links:</strong><table class="table"><tr><th>IP</th><th>ETX</th></tr>{0}</table></p>'.format(linksFormatted());
                 }
             } else if (properties['type'] === 'link') {
                 content.innerHTML = '<h2>' + properties['fromip'] + ' - ' + properties['toip'] + '</h2>';

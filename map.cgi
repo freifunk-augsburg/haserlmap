@@ -49,6 +49,18 @@ Content-type: text/html
         .ol-popup-closer:hover, .ol-popup-closer:focus {
             color: #222222;
         }
+        .table {
+            width: 100%;
+            overfow: auto;
+        }
+        .table {
+            margin-left: -5px;
+            margin-right: -5px;
+        }
+        .table td, .table th {
+            text-align: left;
+            padding: 2.5px 5px;
+        }
     </style>
 </head>
 
