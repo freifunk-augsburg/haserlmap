@@ -88,7 +88,7 @@ function Node(mainip, lat, lon, ishna, hnaip, name) {
             radius: 8,
         }),
         text: new ol.style.Text({
-            text: mainip,
+            text: name,
             offsetY: "15",
             fill: new ol.style.Fill({
                 color: '#000'
@@ -120,7 +120,7 @@ function Self(mainip, lat, lon, ishna, hnaip, name) {
             radius: 8,
         }),
         text: new ol.style.Text({
-            text: mainip,
+            text: name,
             offsetY: "15",
             fill: new ol.style.Fill({
                 color: '#000'
