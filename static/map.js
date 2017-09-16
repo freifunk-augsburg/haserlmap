@@ -47,18 +47,6 @@ if (!String.prototype.format) {
     };
 }
 
-// default icon style
-var iconStyle = new ol.style.Style({
-    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-        color: '#8959A8',
-        crossOrigin: 'anonymous',
-        src: 'https://openlayers.org/en/v4.3.2/examples/data/dot.png'
-    })),
-    anchor: [0.5, 46],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-});
-
 // default lines style
 var linesStyle = new ol.style.Style({
     stroke: new ol.style.Stroke(({
@@ -84,6 +72,7 @@ function Mid(mainip, aliasip) {
 }
 
 function Node(mainip, lat, lon, ishna, hnaip, name) {
+    var color = ishna ? '#ff0000' : '#8959A8'
     points[mainip] = [lon, lat];
     var feature = new ol.Feature({
         geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])),
@@ -92,20 +81,20 @@ function Node(mainip, lat, lon, ishna, hnaip, name) {
         name: name
     });
 
-    var featureIconStyle = iconStyle.clone();
-    featureIconStyle.setImage(
-        new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-            color: ishna ? '#ff0000' : '#8959A8',
-            crossOrigin: 'anonymous',
-            src: 'https://openlayers.org/en/v4.3.2/examples/data/dot.png'
-        }))
-    );
+    var featureIconStyle = new ol.style.Style({
+        image: new ol.style.Circle({
+            fill: new ol.style.Fill({color: color}),
+            stroke: new ol.style.Stroke({ color: 'black', width: 1.5 }),
+            radius: 8,
+        })
+    });
     feature.setStyle(featureIconStyle);
     markers.push(feature);
 }
 
 function Self(mainip, lat, lon, ishna, hnaip, name) {
     points[mainip] = [lon, lat];
+    var color = "#0000ff";
     var feature = new ol.Feature({
         geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])),
         mainip: mainip,
@@ -113,14 +102,13 @@ function Self(mainip, lat, lon, ishna, hnaip, name) {
         name: name
     });
 
-    var featureIconStyle = iconStyle.clone();
-    featureIconStyle.setImage(
-        new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-            color: '#0000ff',
-            crossOrigin: 'anonymous',
-            src: 'https://openlayers.org/en/v4.3.2/examples/data/dot.png'
-        }))
-    );
+    var featureIconStyle = new ol.style.Style({
+        image: new ol.style.Circle({
+            fill: new ol.style.Fill({color: color}),
+            stroke: new ol.style.Stroke({ color: 'black', width: 1.5 }),
+            radius: 8,
+        })
+    });
     feature.setStyle(featureIconStyle);
     markers.push(feature);
     map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
@@ -209,8 +197,7 @@ function ffmapinit() {
     });
 
     vectorLayer = new ol.layer.Vector({
-        source: vectorSource,
-        style: iconStyle,
+        source: vectorSource
     });
 
     var linesSource = new ol.source.Vector({
