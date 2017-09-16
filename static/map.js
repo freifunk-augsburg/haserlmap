@@ -3,7 +3,7 @@ var zoomLevel = ffmap.getAttribute('data-zoom');
 var initLon = parseFloat(ffmap.getAttribute('data-lon'));
 var initLat = parseFloat(ffmap.getAttribute('data-lat'));
 var initCoords = ol.proj.fromLonLat([initLon, initLat])
-var alias = new Array;
+var aliases = new Array;
 var points = new Array;
 var unkpos = new Array;
 var markers = new Array;
@@ -34,6 +34,18 @@ closer.onclick = function() {
     return false;
 };
 
+if (!String.prototype.format) {
+    String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+            return typeof args[number] != 'undefined'
+                ? args[number]
+                : match
+                ;
+        });
+    };
+}
+
 // default icon style
 var iconStyle = new ol.style.Style({
     image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
@@ -55,8 +67,19 @@ var linesStyle = new ol.style.Style({
 
 onload = new Function("if(null!=window.ffmapinit)ffmapinit();");
 
+function getAliases(mainip) {
+    var nodeAliases = new Array();
+    Object.keys(aliases).forEach(function(key) {
+        value = aliases[key];
+        if (value === mainip) {
+            nodeAliases.push(key);
+        }
+    });
+    return nodeAliases;
+}
+
 function Mid(mainip, aliasip) {
-    alias[aliasip] = mainip;
+    aliases[aliasip] = mainip;
 }
 
 function Node(mainip, lat, lon, ishna, hnaip, name) {
@@ -105,8 +128,8 @@ function Self(mainip, lat, lon, ishna, hnaip, name) {
 
 function Link(fromip, toip, lq, nlq, etx) {
     if (0 == lineid && null != window.ffmapstatic) ffmapstatic();
-    if (null != alias[toip]) toip = alias[toip];
-    if (null != alias[fromip]) fromip = alias[fromip];
+    if (null != aliases[toip]) toip = aliases[toip];
+    if (null != aliases[fromip]) fromip = aliases[fromip];
     if (null != points[fromip] && null != points[toip]) {
         var w = 1;
         if (etx < 4) w++;
@@ -179,7 +202,6 @@ function ffmapinit() {
         style: iconStyle,
     });
 
-    //console.log(lines);
     var linesSource = new ol.source.Vector({
         features: lines
     });
@@ -203,9 +225,23 @@ function ffmapinit() {
             var properties = feature.getProperties();
 
             if (properties['type'] === 'node') {
-                content.innerHTML = '<h2>' + properties['mainip'] + '</h2>';
-                content.innerHTML += '<p>'+ properties['name'] + '</p>'
+                var nodeAliases = getAliases(properties['mainip']);
+                function nodeAliasesFormatted() {
+                    var ret = '';
+                    for (var i = 0; i < nodeAliases.length; i++) {
+                        ret += nodeAliases[i];
+                        if (i < nodeAliases.length - 1) {
+                            ret += ', ';
+                        }
+                    };
+                    return ret;
+                }
 
+                content.innerHTML = '<h2>' + properties['name'] + '</h2>';
+                content.innerHTML += '<p>Main IP: <a href="http://{0}" rel="nofollow">{0}</a></p>'.format(properties['mainip']);
+                if (nodeAliases.length > 0) {
+                    content.innerHTML += "<p>Alias IPs: {0}".format(nodeAliasesFormatted());
+                }
             } else if (properties['type'] === 'link') {
                 content.innerHTML = '<h2>' + properties['fromip'] + ' - ' + properties['toip'] + '</h2>';
                 content.innerHTML += '<p>ETX: ' + properties['etx'] + '</p>'
