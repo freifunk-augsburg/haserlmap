@@ -53,8 +53,6 @@ var linesStyle = new ol.style.Style({
     }))
 });
 
-
-
 onload = new Function("if(null!=window.ffmapinit)ffmapinit();");
 
 function Mid(mainip, aliasip) {
@@ -62,7 +60,6 @@ function Mid(mainip, aliasip) {
 }
 
 function Node(mainip, lat, lon, ishna, hnaip, name) {
-    console.log("node add");
     points[mainip] = [lon, lat];
     var feature = new ol.Feature({
         geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat])),
@@ -77,7 +74,7 @@ function Node(mainip, lat, lon, ishna, hnaip, name) {
             color: ishna ? '#ff0000' : '#8959A8',
             crossOrigin: 'anonymous',
             src: 'https://openlayers.org/en/v4.3.2/examples/data/dot.png'
-        })),
+        }))
     );
     feature.setStyle(featureIconStyle);
     markers.push(feature);
@@ -98,7 +95,7 @@ function Self(mainip, lat, lon, ishna, hnaip, name) {
             color: '#0000ff',
             crossOrigin: 'anonymous',
             src: 'https://openlayers.org/en/v4.3.2/examples/data/dot.png'
-        })),
+        }))
     );
     feature.setStyle(featureIconStyle);
     markers.push(feature);
@@ -115,15 +112,8 @@ function Link(fromip, toip, lq, nlq, etx) {
         if (etx < 4) w++;
         if (etx < 2) w++;
 
-        //console.log(points);
-
         var coords = [ol.proj.fromLonLat(points[fromip]), ol.proj.fromLonLat(points[toip])];
-        // var coords = ol.proj.fromLonLat(fromip);
-
-        //console.log(coords);
-
         var linesColor = "rgba(102," + Math.floor(lq * 255.0) + "," + Math.floor(nlq * 255.0) + ",1.0)";
-        //console.log(linesColor);
 
         var linesStyle = new ol.style.Style({
             stroke: new ol.style.Stroke(({
@@ -144,16 +134,8 @@ function Link(fromip, toip, lq, nlq, etx) {
         });
 
         feature.setStyle(linesStyle);
-
-
-
         lines.push(feature);
-
-
-//            map.AddPolyline(new VEPolyline('id' + lineid, [points[fromip], points[toip]],
-//                new VEColor(102, Math.floor(lq * 255.0), Math.floor(nlq * 255.0), 1.0), w));
-    }
-    else {
+    } else {
         if (null == points[toip]) unkpos[toip] = '';
         if (null == points[fromip]) unkpos[fromip] = '';
     }
@@ -197,9 +179,6 @@ function ffmapinit() {
         style: iconStyle,
     });
 
-
-
-
     //console.log(lines);
     var linesSource = new ol.source.Vector({
         features: lines
@@ -215,19 +194,13 @@ function ffmapinit() {
     map.addLayer(vectorLayer);
 
     map.on('singleclick', function(evt) {
-
         var coordinate = evt.coordinate;
-//            var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
-//                coordinate, 'EPSG:3857', 'EPSG:4326'));
-
         var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
             //you can add a condition on layer to restrict the listener
             return feature;
         });
         if (feature) {
-            //console.log(feature);
             var properties = feature.getProperties();
-            //console.log(properties);
 
             if (properties['type'] === 'node') {
                 content.innerHTML = '<h2>' + properties['mainip'] + '</h2>';
@@ -240,9 +213,6 @@ function ffmapinit() {
                 content.innerHTML += '<p>NLQ: ' + properties['nlq'] + '</p>'
             }
             overlay.setPosition(coordinate);
-
         }
     });
-
-
 }
