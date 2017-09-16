@@ -86,7 +86,18 @@ function Node(mainip, lat, lon, ishna, hnaip, name) {
             fill: new ol.style.Fill({color: color}),
             stroke: new ol.style.Stroke({ color: 'black', width: 1.5 }),
             radius: 8,
-        })
+        }),
+        text: new ol.style.Text({
+            text: mainip,
+            offsetY: "15",
+            fill: new ol.style.Fill({
+                color: '#000'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#fff',
+                width: 2,
+            })
+        }),
     });
     feature.setStyle(featureIconStyle);
     markers.push(feature);
@@ -107,7 +118,18 @@ function Self(mainip, lat, lon, ishna, hnaip, name) {
             fill: new ol.style.Fill({color: color}),
             stroke: new ol.style.Stroke({ color: 'black', width: 1.5 }),
             radius: 8,
-        })
+        }),
+        text: new ol.style.Text({
+            text: mainip,
+            offsetY: "15",
+            fill: new ol.style.Fill({
+                color: '#000'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#fff',
+                width: 2,
+            })
+        }),
     });
     feature.setStyle(featureIconStyle);
     markers.push(feature);
