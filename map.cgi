@@ -23,9 +23,31 @@ Content-type: text/html
             display: none;
         }
         .ol-popup {
-            background-color: #fff;
+            position: relative;
+            background-color: rgba(255,255,255,0.85);
             padding: 10px;
+            min-width: 200px;
             border-radius: 5px;
+        }
+        .ol-popup-closer {
+            position: absolute;
+            border: 1px solid #ccc;
+            background-color: rgba(255,255,255,0.5);
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            right: -12px;
+            top: -12px;
+            color: #666666;
+            font-size: 32px;
+            line-height: 26px;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            transition: color 0.2s;
+        }
+        .ol-popup-closer:hover, .ol-popup-closer:focus {
+            color: #222222;
         }
     </style>
 </head>
@@ -36,7 +58,7 @@ Content-type: text/html
 
 <div id="ffmap" tabindex="0" data-zoom="<% echo -n $ZOOM_LEVEL %>" data-lat="<% echo -n $LAT %>" data-lon="<% echo -n $LON %>"></div>
 <div id="popup" class="ol-popup">
-    <a href="#" id="popup-closer" class="ol-popup-closer">X</a>
+    <a href="#" id="popup-closer" class="ol-popup-closer">&times;</a>
     <div id="popup-content"></div>
 </div>
 
